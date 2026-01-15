@@ -163,3 +163,23 @@ class MetadataManager:
         if column_tags:
             for column, tags in column_tags.items():
                 self.add_column_tags(table, column, tags)
+
+
+metadata = MetadataManager(spark, dry_run=False)
+
+metadata.apply_standard_governance(
+    table="fsi_catalog.customer_data.accounts",
+    domain="banking",
+    owner="risk_team",
+    classification="PII",
+    regulation="GDPR"
+)
+
+metadata.bulk_apply_comments(
+    table="fsi_catalog.customer_data.accounts",
+    table_comment="Customer account master data",
+    column_comments={
+        "account_id": "Unique account identifier",
+        "balance": "Current account balance"
+    }
+)
